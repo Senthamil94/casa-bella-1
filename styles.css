@@ -119,8 +119,9 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 /* ---------- Chapters ---------- */
 .chapter{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;justify-content:center;overflow:hidden;text-align:center}
 .ch-bg{position:absolute;inset:-12% 0;background-size:cover;background-position:center;will-change:transform}
-.chapter::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(20,14,8,.55) 0%,rgba(20,14,8,.78) 100%)}
-.ch-inner{position:relative;z-index:2;padding:120px 6vw;max-width:900px}
+.chapter::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(20,14,8,.55) 0%,rgba(20,14,8,.78) 100%);transition:background .6s var(--ease)}
+.chapter:hover::after,.chapter:focus-within::after{background:radial-gradient(ellipse at center,rgba(20,14,8,.7) 0%,rgba(20,14,8,.9) 100%)}
+.ch-inner{position:relative;z-index:2;padding:120px 6vw;max-width:900px;width:100%}
 .ch-no{font-family:var(--serif);font-size:.78rem;letter-spacing:.58em;text-transform:uppercase;color:var(--gold-pale);font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,.7);margin-bottom:20px;opacity:0;transform:translateY(20px);transition:all .9s var(--ease)}
 .ch-title{font-family:var(--script);font-size:clamp(2.7rem,8vw,6.2rem);color:#fff;font-weight:700;line-height:1.3;padding:0 .1em;text-shadow:0 4px 28px rgba(0,0,0,.85),0 2px 8px rgba(0,0,0,.7);opacity:0;transform:translateY(30px);transition:all 1s var(--ease) .12s}
 .ch-sub{font-family:var(--serif);font-style:italic;font-size:clamp(1.05rem,2.1vw,1.35rem);color:#fff;font-weight:600;text-shadow:0 2px 14px rgba(0,0,0,.75);margin-top:8px;max-width:52ch;margin-left:auto;margin-right:auto;opacity:0;transform:translateY(24px);transition:all 1s var(--ease) .24s}
@@ -128,6 +129,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .ch-links button,.ch-links a{font-size:.68rem;letter-spacing:.34em;text-transform:uppercase;color:#fff;font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,.7);padding:8px 2px;border-bottom:1px solid transparent;transition:all .35s}
 .ch-links button:hover,.ch-links a:hover{color:var(--gold-pale);border-color:var(--gold-pale)}
 .ch-enter{margin-top:40px;opacity:0;transform:translateY(20px);transition:all 1s var(--ease) .45s}
+.ch-reveal{width:100%;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .5s var(--ease),visibility .5s}
+.ch-reveal .ch-sub,.ch-reveal .ch-links,.ch-reveal .ch-enter{opacity:1;transform:none;position:relative;z-index:3}
 .btn{display:inline-flex;align-items:center;gap:12px;padding:16px 42px;font-size:.66rem;letter-spacing:.34em;text-transform:uppercase;font-weight:700;transition:all .45s var(--ease);position:relative}
 .btn::before,.btn::after{content:'';position:absolute;width:7px;height:7px;border:1px solid currentColor;opacity:0;transition:all .45s var(--ease)}
 .btn::before{top:4px;left:4px;border-right:none;border-bottom:none}
@@ -137,7 +140,17 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 .btn-line:hover{border-color:var(--gold-pale);color:var(--gold-pale);letter-spacing:.4em}
 .btn-gold{background:var(--gold);color:var(--espresso)}
 .btn-gold:hover{background:var(--gold-pale);letter-spacing:.4em}
-.chapter.seen .ch-no,.chapter.seen .ch-title,.chapter.seen .ch-sub,.chapter.seen .ch-links,.chapter.seen .ch-enter{opacity:1;transform:none}
+.chapter.seen .ch-no,.chapter.seen .ch-title{opacity:1;transform:none}
+@media (hover:hover) and (pointer:fine){
+  .chapter.seen:hover .ch-reveal,
+  .chapter.seen:focus-within .ch-reveal,
+  .chapter.seen:target .ch-reveal{
+    opacity:1;visibility:visible;pointer-events:auto
+  }
+}
+@media (hover:none), (pointer:coarse){
+  .chapter.seen .ch-reveal{opacity:1;visibility:visible;pointer-events:auto}
+}
 /* chapter divider ornament */
 .orn{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:18px;opacity:0;transition:all .9s var(--ease)}
 .chapter.seen .orn{opacity:1}
@@ -300,7 +313,8 @@ button{font-family:inherit;cursor:pointer;border:none;background:none;color:inhe
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important;scroll-behavior:auto!important}
-  .chapter .ch-no,.chapter .ch-title,.chapter .ch-sub,.chapter .ch-links,.chapter .ch-enter,.chapter .orn{opacity:1;transform:none}
+  .chapter .ch-no,.chapter .ch-title,.chapter .ch-sub,.chapter .ch-links,.chapter .ch-enter,.chapter .orn,.chapter .ch-reveal{opacity:1;visibility:visible;pointer-events:auto}
+  .chapter .ch-reveal{transform:translateY(0)}
   .ov-script,.ov-tag,.ov-loc,.ov-cue{opacity:1}
 }
 
